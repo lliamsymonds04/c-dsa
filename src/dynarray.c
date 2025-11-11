@@ -91,9 +91,36 @@ int dynarray_remove(DynArray *array, size_t index) {
   return 1;
 }
 
+void *median_of_three(DynArray *array, Comparator comparator, size_t low, size_t high) {
+  char *base = (char *)array->data;
+
+  size_t mid = low;
+  void *lowPtr = base + (low * array->element_size);
+  void *midPtr = base + (mid * array->element_size);
+  void *highPtr = base + (high * array->element_size);
+
+  if (comparator(lowPtr, midPtr) > 0) {
+    if (comparator(lowPtr, highPtr) < 0) {
+      return lowPtr;
+    } else if (comparator(midPtr, highPtr) > 0) {
+      return midPtr;
+    } else {
+      return highPtr;
+    }
+  } else {
+    if (comparator(lowPtr, highPtr) > 0) {
+      return lowPtr;
+    } else if (comparator(midPtr, highPtr) < 0) {
+      return midPtr;
+    } else {
+      return highPtr;
+    }
+  }
+}
+
 size_t partition(DynArray *array, Comparator comparator, size_t low, size_t high) {
   char *base = (char *)array->data;
-  void *pivot = base + (low * array->element_size);
+  void *pivot = median_of_three(array, comparator, low, high);
   size_t leftWall = low;
 
   void *temp = malloc(array->element_size);

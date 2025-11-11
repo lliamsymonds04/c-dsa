@@ -15,6 +15,8 @@ void dynarray_free(DynArray *array);
 
 int dynarray_push_back(DynArray *array, const void *element);
 int dynarray_pop_back(DynArray *array);
+int dynarray_insert(DynArray *array, const void *element, size_t index);
+int dynarray_remove(DynArray *array, size_t index);
 void *dynarray_get(DynArray *array, size_t index);
 size_t dynarray_size(DynArray *array);
 

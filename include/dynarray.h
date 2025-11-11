@@ -10,6 +10,8 @@ typedef struct {
   size_t element_size;
 } DynArray;
 
+typedef int (*Comparator)(const void *, const void *); 
+
 DynArray *dynarray_create(size_t element_size);
 void dynarray_free(DynArray *array);
 
@@ -17,7 +19,9 @@ int dynarray_push_back(DynArray *array, const void *element);
 int dynarray_pop_back(DynArray *array);
 int dynarray_insert(DynArray *array, const void *element, size_t index);
 int dynarray_remove(DynArray *array, size_t index);
+int dynarray_sort(DynArray *array, Comparator comparator);
 void *dynarray_get(DynArray *array, size_t index);
 size_t dynarray_size(DynArray *array);
+
 
 #endif

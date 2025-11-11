@@ -91,6 +91,60 @@ int dynarray_remove(DynArray *array, size_t index) {
   return 1;
 }
 
+size_t partition(DynArray *array, Comparator comparator, size_t low, size_t high) {
+  char *base = (char *)array->data;
+  void *pivot = base + (low * array->element_size);
+  size_t leftWall = low;
+
+  void *temp = malloc(array->element_size);
+  if (!temp) {
+    // Handle memory allocation failure
+    exit(EXIT_FAILURE);
+  }
+
+  for (size_t i = low + 1; i <= high; i++) {
+
+    void *iPtr = base + (i * array->element_size);
+    if (comparator(iPtr, pivot) < 0) {
+      leftWall++;
+
+      // Swap elements at i and leftWall
+      void *leftWallPtr = base + (leftWall * array->element_size);
+      memcpy(temp, leftWallPtr, array->element_size);
+      memcpy(leftWallPtr, iPtr, array->element_size);
+      memcpy(iPtr, temp, array->element_size);
+    }
+  }
+
+  // swap pivot with leftWall
+  void *leftWallPtr = base + (leftWall * array->element_size);
+  void *pivotPtr = base + (low * array->element_size);
+
+  memcpy(temp, leftWallPtr, array->element_size);
+  memcpy(leftWallPtr, pivotPtr, array->element_size);
+  memcpy(pivotPtr, temp, array->element_size);
+
+  free(temp);
+  return leftWall;
+}
+
+void quick_sort(DynArray *array, Comparator comparator, size_t low, size_t high) {
+  if (low < high) {
+    // Partitioning index
+    size_t pivot_index = partition(array, comparator, low, high);
+    if (pivot_index > 0) {
+      quick_sort(array, comparator, low, pivot_index - 1);
+    } 
+    quick_sort(array, comparator, pivot_index + 1, high);
+  }
+}
+
+int dynarray_sort(DynArray *array, Comparator comparator) {
+  if (!array || array->size <= 1) return 1; // Already sorted
+  quick_sort(array, comparator, 0, array->size - 1);
+  return 1;
+}
+
 void *dynarray_get(DynArray *array, size_t index) {
   if (index >= array->size) return NULL; // Index out of bounds
 

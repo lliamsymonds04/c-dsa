@@ -1,6 +1,13 @@
 #include "dynarray.h"
 #include <stdio.h>
 
+int compare_ints(const void *a, const void *b) {
+  int x = *(const int *)a;
+  int y = *(const int *)b;
+
+  return (x > y) - (x < y);
+}
+
 int main() {
   DynArray *array = dynarray_create(sizeof(int));
 
@@ -37,7 +44,16 @@ int main() {
     int *value = (int *)dynarray_get(array, i);
     printf("%d ", *value);
   }
-  
+
+  printf("\n");
+
+  // test sort
+  dynarray_sort(array, compare_ints);
+
+  for (size_t i = 0; i < dynarray_size(array); i++) {
+    int *value = (int *)dynarray_get(array, i);
+    printf("%d ", *value);
+  }
 
   printf("\n");
 

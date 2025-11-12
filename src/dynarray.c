@@ -36,7 +36,7 @@ int resize_if_needed(DynArray *array) {
     array->data = new_data;
     array->capacity = new_capacity;
   }
-  return 1;
+  return 0;
 }
 
 int dynarray_push_back(DynArray *array, const void *element) {
@@ -47,14 +47,14 @@ int dynarray_push_back(DynArray *array, const void *element) {
   memcpy(target, element, array->element_size);
 
   array->size++;
-  return 1;
+  return 0;
 }
 
 int dynarray_pop_back(DynArray *array) {
   if (array->size == 0) return -1; // Array is empty
 
   array->size--;
-  return 1;
+  return 0;
 }
 
 int dynarray_insert(DynArray *array, const void *element, size_t index) {
@@ -73,7 +73,7 @@ int dynarray_insert(DynArray *array, const void *element, size_t index) {
   memcpy(dest, element, array->element_size);
   array->size++;
 
-  return 1;
+  return 0;
 }
 
 int dynarray_remove(DynArray *array, size_t index) {
@@ -88,7 +88,7 @@ int dynarray_remove(DynArray *array, size_t index) {
 
   array->size--;
 
-  return 1;
+  return 0;
 }
 
 void *median_of_three(DynArray *array, Comparator comparator, size_t low, size_t high) {
@@ -167,9 +167,9 @@ void quick_sort(DynArray *array, Comparator comparator, size_t low, size_t high)
 }
 
 int dynarray_sort(DynArray *array, Comparator comparator) {
-  if (!array || array->size <= 1) return 1; // Already sorted
+  if (!array || array->size <= 1) return 0; // Already sorted
   quick_sort(array, comparator, 0, array->size - 1);
-  return 1;
+  return 0;
 }
 
 void *dynarray_get(DynArray *array, size_t index) {

@@ -1,8 +1,8 @@
 #ifndef STACK_H
 #define STACK_H
 
-#include <stdlib.h>
 #include "dynarray.h"
+#include <stdlib.h>
 
 typedef struct {
   DynArray *array;

@@ -56,3 +56,4 @@ dkms.conf
 
 # Make file output
 dsa_test
+compile_commands.json

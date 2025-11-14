@@ -10,7 +10,7 @@ int test_stack() {
     stack_push(stack, &val);
   }
 
-  //test popping
+  // test popping
   int value;
   for (int i = 0; i < 10; i++) {
     if (stack_pop(stack, &value) == 0) {

@@ -1,12 +1,13 @@
 #include "dynarray.h"
-#include <string.h>
 #include <stdio.h>
+#include <string.h>
 
 #define INITIAL_CAPACITY 4
 
 DynArray *dynarray_create(size_t element_size) {
   DynArray *array = malloc(sizeof(DynArray));
-  if (!array) return NULL;
+  if (!array)
+    return NULL;
 
   array->data = malloc(INITIAL_CAPACITY * element_size);
   if (!array->data) {
@@ -31,7 +32,8 @@ int resize_if_needed(DynArray *array) {
   if (array->size >= array->capacity) {
     size_t new_capacity = array->capacity * 2;
     void *new_data = realloc(array->data, new_capacity * array->element_size);
-    if (!new_data) return -1; // Memory allocation failed
+    if (!new_data)
+      return -1; // Memory allocation failed
 
     array->data = new_data;
     array->capacity = new_capacity;
@@ -40,7 +42,8 @@ int resize_if_needed(DynArray *array) {
 }
 
 int dynarray_push_back(DynArray *array, const void *element) {
-  if (resize_if_needed(array) == -1) return -1;
+  if (resize_if_needed(array) == -1)
+    return -1;
 
   // Add the new element
   void *target = (char *)array->data + (array->size * array->element_size);
@@ -51,23 +54,27 @@ int dynarray_push_back(DynArray *array, const void *element) {
 }
 
 int dynarray_pop_back(DynArray *array) {
-  if (array->size == 0) return -1; // Array is empty
+  if (array->size == 0)
+    return -1; // Array is empty
 
   array->size--;
   return 0;
 }
 
 int dynarray_insert(DynArray *array, const void *element, size_t index) {
-  if (index > array->size) return -1; // Index out of bounds
+  if (index > array->size)
+    return -1; // Index out of bounds
 
-  if (resize_if_needed(array) == -1) return -1;
+  if (resize_if_needed(array) == -1)
+    return -1;
 
   // Insert the new element
   char *base = (char *)array->data;
   void *dest = base + (index * array->element_size);
 
   // move data to right to fit place new element
-  memmove((char *)dest + array->element_size, dest, (array->size - index) * array->element_size);
+  memmove((char *)dest + array->element_size, dest,
+          (array->size - index) * array->element_size);
 
   // Copy new element into the gap
   memcpy(dest, element, array->element_size);
@@ -77,7 +84,8 @@ int dynarray_insert(DynArray *array, const void *element, size_t index) {
 }
 
 int dynarray_remove(DynArray *array, size_t index) {
-  if (index >= array->size) return -1; // Index out of bounds
+  if (index >= array->size)
+    return -1; // Index out of bounds
 
   // move data to left to fill the gap
   char *base = (char *)array->data;
@@ -91,7 +99,8 @@ int dynarray_remove(DynArray *array, size_t index) {
   return 0;
 }
 
-void *median_of_three(DynArray *array, Comparator comparator, size_t low, size_t high) {
+void *median_of_three(DynArray *array, Comparator comparator, size_t low,
+                      size_t high) {
   char *base = (char *)array->data;
 
   size_t mid = low;
@@ -118,7 +127,8 @@ void *median_of_three(DynArray *array, Comparator comparator, size_t low, size_t
   }
 }
 
-size_t partition(DynArray *array, Comparator comparator, size_t low, size_t high) {
+size_t partition(DynArray *array, Comparator comparator, size_t low,
+                 size_t high) {
   char *base = (char *)array->data;
   void *pivot = median_of_three(array, comparator, low, high);
   size_t leftWall = low;
@@ -155,29 +165,30 @@ size_t partition(DynArray *array, Comparator comparator, size_t low, size_t high
   return leftWall;
 }
 
-void quick_sort(DynArray *array, Comparator comparator, size_t low, size_t high) {
+void quick_sort(DynArray *array, Comparator comparator, size_t low,
+                size_t high) {
   if (low < high) {
     // Partitioning index
     size_t pivot_index = partition(array, comparator, low, high);
     if (pivot_index > 0) {
       quick_sort(array, comparator, low, pivot_index - 1);
-    } 
+    }
     quick_sort(array, comparator, pivot_index + 1, high);
   }
 }
 
 int dynarray_sort(DynArray *array, Comparator comparator) {
-  if (!array || array->size <= 1) return 0; // Already sorted
+  if (!array || array->size <= 1)
+    return 0; // Already sorted
   quick_sort(array, comparator, 0, array->size - 1);
   return 0;
 }
 
 void *dynarray_get(DynArray *array, size_t index) {
-  if (index >= array->size) return NULL; // Index out of bounds
+  if (index >= array->size)
+    return NULL; // Index out of bounds
 
   return (char *)array->data + (index * array->element_size);
 }
 
-size_t dynarray_size(DynArray *array) {
-  return array->size;
-}
+size_t dynarray_size(DynArray *array) { return array->size; }

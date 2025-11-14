@@ -24,5 +24,5 @@ int test_stack() {
   stack_free(stack);
   printf("Stack test passed\n\n");
 
-  return 0;
+  return 1;
 }

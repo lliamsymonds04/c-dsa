@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
     total_tests++;
   }
 
-  printf("\n [OVERALL] Passed %d out of %d tests.\n", passed, total_tests);
+  printf("\n[OVERALL] Passed %d out of %d tests.\n", passed, total_tests);
 
   return 0;
 }

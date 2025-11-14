@@ -38,7 +38,7 @@ int test_dynarray() {
 
   printf("\n");
 
-  //test remove
+  // test remove
   int remove_index = 3;
   dynarray_remove(array, remove_index);
   for (size_t i = 0; i < dynarray_size(array); i++) {
@@ -61,5 +61,5 @@ int test_dynarray() {
   dynarray_free(array);
 
   printf("[PASSED]\n\n");
-  return 0;
+  return 1;
 }

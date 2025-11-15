@@ -87,5 +87,16 @@ int hash_map_get(HashMap *map, const void *key, void *out_value) {
 }
 
 int hash_map_remove(HashMap *map, const void *key) {
+  int found = 0;
+  size_t index = find_slot(map, key, &found);
+
+  if (found == 1) {
+    map->state[index] = 2; // Mark as deleted
+    map->size--;
+    return 0;
+  }
+
   return -1; // Not found
 }
+
+size_t hash_map_size(HashMap *map) { return map->size; }
